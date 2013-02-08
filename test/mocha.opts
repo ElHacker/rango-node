@@ -1,0 +1,4 @@
+-R spec
+--ui bdd
+--compilers coffee:coffee-script
+--recursive
