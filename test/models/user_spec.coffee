@@ -52,6 +52,7 @@ describe 'User', ->
 					friend._id.equals(accepted_friends_list[0]._id).should.be.true
 					done()
 
+	# TODO: REFACTOR
 	it "should paginate the user's friends ", (done) ->
 		# When the user has several friends accepted
 		# And the friends accepted the user

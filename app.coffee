@@ -1,7 +1,8 @@
-express = require("express")
-routes = require("./routes")
-user = require("./routes/user")
-tcp_socket_server = require('./tcp_socket_server')
+express = require "express"
+mongoose = require "mongoose"
+routes = require "./routes"
+user = require "./routes/user" 
+tcp_socket_server = require './tcp_socket_server'
 
 
 http = require("http")
@@ -9,7 +10,7 @@ path = require("path")
 
 app = express()
 app.configure ->
-  app.set "port", process.env.PORT or 80
+  app.set "port", process.env.PORT or 3000
   app.set "views", __dirname + "/views"
   app.set "view engine", "jade"
   app.use express.favicon()
@@ -20,10 +21,11 @@ app.configure ->
   app.use express.static(path.join(__dirname, "public"))
 
 app.configure "development", ->
+  mongoose.connect 'mongodb://localhost/rango-test'  
   app.use express.errorHandler()
 
 app.get "/", routes.index
-app.get "/users", user.list
+app.get "/users.json", user.list
 
 tcpserver = tcp_socket_server.createServer()
 
