@@ -26,6 +26,7 @@ app.configure "development", ->
 
 app.get "/", routes.index
 app.get "/users.json", user.list
+app.get "/users/:fb_id.json", user.one_user
 
 tcpserver = tcp_socket_server.createServer()
 

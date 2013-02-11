@@ -50,3 +50,13 @@ describe 'Rest-API for User', ->
 			json_data.should.be.instanceof(Array)
 			done()
 		make_request(default_options, cb, done)
+
+	it 'should GET one specific User', (done) ->
+		fb_id = '12345678'
+		default_options.path = "/users/#{fb_id}.json"
+		cb = (json_data, res) ->
+			res.statusCode.should.be.equal(200)
+			json_data.should.have.property('first_name')
+			json_data.first_name.should.be.eql("Braulio")
+			done()
+		make_request(default_options, cb, done)
