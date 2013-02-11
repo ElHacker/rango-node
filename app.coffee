@@ -25,8 +25,11 @@ app.configure "development", ->
   app.use express.errorHandler()
 
 app.get "/", routes.index
+# REST API
+# User resource
 app.get "/users.json", user.list
 app.get "/users/:fb_id.json", user.one_user
+app.post "/users.json", user.create_user
 
 tcpserver = tcp_socket_server.createServer()
 

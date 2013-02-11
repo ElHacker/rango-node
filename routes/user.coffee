@@ -17,3 +17,12 @@ module.exports =
 				res.json 200, user
 			else
 				res.json 500, err
+
+	create_user: (req, res) ->
+		json_user = JSON.parse(req.body.user)
+		new_user = new User(json_user)
+		new_user.save (err)->
+			unless err
+				res.json(201, {})
+			else
+				res.json(500, err)
