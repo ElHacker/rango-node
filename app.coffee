@@ -30,6 +30,7 @@ app.get "/", routes.index
 app.get "/users.json", user.list
 app.get "/users/:fb_id.json", user.one_user
 app.post "/users.json", user.create_user
+app.put "/users/:fb_id.json", user.update_user
 
 tcpserver = tcp_socket_server.createServer()
 

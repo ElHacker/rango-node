@@ -41,15 +41,15 @@ describe 'User', ->
 	it "should retrieve the user's friends", (done) ->
 		# When the user has a friend accepted
 		# And the friend has the user accepted
-		friend = new User()
-		user.friends.push friend._id
-		friend.friends.push user._id
+		friend = new User(fb_id:"23456789")
+		user.friends.push friend.fb_id
+		friend.friends.push user.fb_id
 
 		# Retrieve the user's friends list
 		friend.save ->
 			user.save ->
 				user.get_accepted_friends_list (accepted_friends_list) ->
-					friend._id.equals(accepted_friends_list[0]._id).should.be.true
+					friend.fb_id.should.equal(accepted_friends_list[0].fb_id)
 					done()
 
 	# TODO: REFACTOR
@@ -60,8 +60,8 @@ describe 'User', ->
 		for i in [0...20]
 			# Create 20 friends with random fb_id
 			friend = new User(fb_id: Math.random().toString(36).substring(7))
-			friend.friends.push user._id
-			user.friends.push friend._id
+			friend.friends.push user.fb_id
+			user.friends.push friend.fb_id
 			friends.push friend
 		# because saving an instance of a user is an asynchronous task
 		# We have to keep count of all the users saved to know when to
