@@ -83,7 +83,7 @@ describe 'User', ->
 						console.log "Error #{err}" if err?
 						options = [
 							{ "skip": 0  ,	"limit": 10  }
-							{ "skip": 10 ,	"limit": 20 }
+							{ "skip": 10 ,	"limit": 10 }
 						]
 						friends_count = 0
 						for option in options
@@ -91,14 +91,13 @@ describe 'User', ->
 							do (option) ->
 								# Define the callback that checks for the asserts
 								cb = (accepted_friends_list) ->
-										# Compare all the friends
-										for i in [0...accepted_friends_list.length]
-											# Option.skip + 1 is the last position we used
-											friends[option.skip + i]._id.equals(accepted_friends_list[i]._id).should.be.true
-										friends_count += accepted_friends_list.length
-										# if Finished comparing friends
-										if friends_count == friends.length
-											done()
+									# Compare all the friends
+									for i in [0...accepted_friends_list.length]
+										# Option.skip + 1 is the last position we used
+										friends[option.skip + i].fb_id.should.eql(accepted_friends_list[i].fb_id)
+									friends_count += accepted_friends_list.length
+									# if Finished comparing friends
+									if friends_count == friends.length
+										done()
 								# Get the accepted friends list
-								user.get_accepted_friends_list( cb, 
-													option.skip, option.limit)
+								user.get_accepted_friends_list( cb, option.skip, option.limit)

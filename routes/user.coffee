@@ -21,7 +21,7 @@ module.exports =
     create_user: (req, res) ->
         json_user = JSON.parse(req.body.user)
         new_user = new User(json_user)
-        new_user.save (err, doc)->
+        new_user.save (err)->
             unless err?
                 res.json(201, {})
             else
@@ -29,11 +29,9 @@ module.exports =
     
     update_user: (req, res) ->
         fb_id = req.params.fb_id
-        console.log fb_id
         user_to_update = JSON.parse(req.body.user)
         User.findOne 'fb_id':fb_id, (err, user)->
             unless err?
-                console.log user
                 if user?
                     user.first_name = user_to_update.first_name if user_to_update.first_name?
                     user.last_name = user_to_update.last_name if user_to_update.last_name?
@@ -44,5 +42,17 @@ module.exports =
                             res.json(500)
                 else
                     res.json(404, msg:'User not found')
+            else
+                res.json(500, err)
+
+    get_user_friends: (req, res) ->
+        fb_id = req.params.fb_id
+        skip = req.params.skip
+        limit = req.params.limit
+        User.findOne 'fb_id':fb_id, (err, user) ->
+            unless err?
+                cb = (accepted_friends_list) ->
+                    res.json(200, accepted_friends_list)
+                user.get_accepted_friends_list(cb, skip, limit) 
             else
                 res.json(500, err)

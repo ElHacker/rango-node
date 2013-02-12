@@ -114,3 +114,15 @@ describe 'Rest-API for User', ->
           done()
         make_request(default_options, cb, done, post_data)
 
+    describe "Sub-Resource Friends", ->
+        
+        it "should GET all user's accepted friends", (done) ->
+            fb_id = "12345678"
+            default_options.path = "/users/#{fb_id}/friends.json"
+            default_options.method = "GET"
+            cb = (json_data, res) ->
+                res.statusCode.should.be.equal(200)
+                json_data[0].should.have.property('first_name')
+                json_data[0].first_name.should.eql("Kalypso Erika")
+                done()
+            make_request(default_options, cb, done)
