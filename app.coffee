@@ -34,6 +34,7 @@ app.put "/users/:fb_id.json", user.update_user
 # User's friends subresource
 app.get "/users/:fb_id/friends.json", user.get_user_friends
 app.get "/users/:fb_id/friends/requests.json", user.get_friend_requests
+app.post "/users/:fb_id/friends/requests.json", user.create_friend_request
 
 tcpserver = tcp_socket_server.createServer()
 

@@ -143,3 +143,26 @@ describe 'Rest-API for User', ->
               json_data[0].first_name.should.eql('Foo')
               done()
             make_request(default_options,cb, done)
+
+        it 'should POST a friend request to a user', (done) ->
+            # fb_id of the user that receives the friend request
+            fb_id = "12345678"
+            # Requesting user
+            # This is the user who makes the friend request
+            new_user = new User(
+              first_name : "FooCamp"
+              last_name: "BarCamp"
+              fb_id: "012345"
+            )
+            new_user.save (err, doc) ->
+                post_data = "user=" + JSON.stringify(doc)
+                default_options.path = "/users/#{fb_id}/friends/requests.json"
+                default_options.method = "POST"
+                default_options.headers = 
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Length': post_data.length
+                cb = (json_data, res) ->
+                    res.statusCode.should.be.equal(201)
+                    done()
+                make_request(default_options, cb, done, post_data)
+

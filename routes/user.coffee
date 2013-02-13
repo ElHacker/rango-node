@@ -39,7 +39,7 @@ module.exports =
                         unless err?
                             res.json(200)
                         else
-                            res.json(500)
+                            res.json(500, err)
                 else
                     res.json(404, msg:'User not found')
             else
@@ -68,3 +68,23 @@ module.exports =
               user.get_pending_friend_requests(cb, skip, limit)
           else
               res.json(500, err)
+
+    # This method looks more like a PUT
+    # than a POST, maybe change later.
+    create_friend_request: (req, res) ->
+        requested_fb_id = req.params.fb_id
+        requester_user = JSON.parse req.body.user
+        User.findOne fb_id: requester_user.fb_id, (err, user)->
+            unless err?
+                if user?
+                    user.friends.push requested_fb_id
+                    user.save (err) ->
+                      unless err?
+                          res.json(201)
+                      else
+                          res.json(500, err)
+                else
+                    res.json(404, msg: "User not found")
+            else
+              res.json(500, err)
+        res.json(201, {})
