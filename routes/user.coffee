@@ -72,12 +72,12 @@ module.exports =
     # This method looks more like a PUT
     # than a POST, maybe change later.
     create_friend_request: (req, res) ->
-        requested_fb_id = req.params.fb_id
-        requester_user = JSON.parse req.body.user
-        User.findOne fb_id: requester_user.fb_id, (err, user)->
+        requester_fb_id = req.params.fb_id
+        requested_user = JSON.parse req.body.user
+        User.findOne fb_id: requester_fb_id, (err, user)->
             unless err?
                 if user?
-                    user.friends.push requested_fb_id
+                    user.friends.push requested_user.fb_id
                     user.save (err) ->
                       unless err?
                           res.json(201)

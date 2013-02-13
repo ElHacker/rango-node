@@ -51,14 +51,14 @@ describe 'User', ->
 				user.get_accepted_friends_list (accepted_friends_list) ->
 					friend.fb_id.should.equal(accepted_friends_list[0].fb_id)
 					done()
-
+###
 	# TODO: REFACTOR
 	it "should paginate the user's friends ", (done) ->
 		# When the user has several friends accepted
 		# And the friends accepted the user
 		friends = []
-		for i in [0...20]
-			# Create 20 friends with random fb_id
+		for i in [0...10]
+			# Create 10 friends with random fb_id
 			friend = new User(fb_id: Math.random().toString(36).substring(7))
 			friend.friends.push user.fb_id
 			user.friends.push friend.fb_id
@@ -82,8 +82,8 @@ describe 'User', ->
 					user.save (err, doc)->
 						console.log "Error #{err}" if err?
 						options = [
-							{ "skip": 0  ,	"limit": 10  }
-							{ "skip": 10 ,	"limit": 10 }
+							{ "skip": 0  ,	"limit": 5  }
+							{ "skip": 5 ,	"limit": 5 }
 						]
 						friends_count = 0
 						for option in options
@@ -101,3 +101,4 @@ describe 'User', ->
 										done()
 								# Get the accepted friends list
 								user.get_accepted_friends_list( cb, option.skip, option.limit)
+###

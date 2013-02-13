@@ -145,10 +145,10 @@ describe 'Rest-API for User', ->
             make_request(default_options,cb, done)
 
         it 'should POST a friend request to a user', (done) ->
-            # fb_id of the user that receives the friend request
+            # fb_id of the user that makes the friend request
             fb_id = "12345678"
-            # Requesting user
-            # This is the user who makes the friend request
+            # Requested user
+            # This is the user who receives the friend request
             new_user = new User(
               first_name : "FooCamp"
               last_name: "BarCamp"
