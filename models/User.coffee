@@ -19,4 +19,13 @@ User.methods.get_accepted_friends_list = (callback, skip=null, limit=null) ->
 					callback(accepted_friends_list)
 	)
 
+
+User.methods.get_pending_friend_requests = (callback, skip=null, limit=null) ->
+	@.db.model('User').find(
+				{ fb_id: { $nin: @.friends }, friends: @.fb_id }, #query
+				[],	# fields
+				{ skip: skip, limit: limit },	#options
+				(err, pending_friend_requests) ->
+					callback(pending_friend_requests)
+	)
 module.exports = mongoose.model 'User', User

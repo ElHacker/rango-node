@@ -47,8 +47,8 @@ module.exports =
 
     get_user_friends: (req, res) ->
         fb_id = req.params.fb_id
-        skip = req.params.skip
-        limit = req.params.limit
+        skip = req.query.skip
+        limit = req.query.limit
         User.findOne 'fb_id':fb_id, (err, user) ->
             unless err?
                 cb = (accepted_friends_list) ->
@@ -56,3 +56,15 @@ module.exports =
                 user.get_accepted_friends_list(cb, skip, limit) 
             else
                 res.json(500, err)
+
+    get_friend_requests: (req, res)->
+        fb_id = req.params.fb_id
+        skip = req.query.skip
+        limit = req.query.limit
+        User.findOne 'fb_id':fb_id, (err, user)->
+          unless err?
+              cb = (pending_friend_requests) ->
+                  res.json(200, pending_friend_requests)
+              user.get_pending_friend_requests(cb, skip, limit)
+          else
+              res.json(500, err)

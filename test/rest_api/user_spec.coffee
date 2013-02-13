@@ -126,3 +126,20 @@ describe 'Rest-API for User', ->
                 json_data[0].first_name.should.eql("Kalypso Erika")
                 done()
             make_request(default_options, cb, done)
+
+        it "should GET all user's pending friend requests", (done) ->
+          fb_id = "12345678"
+          default_options.path = "/users/#{fb_id}/friends/requests.json"
+          default_options.method = "GET"
+          new_user = new User(
+            first_name : "Foo"
+            last_name : "Bar"
+            friends : ["12345678"]
+          )
+          new_user.save () ->
+            cb = (json_data, res)->
+              res.statusCode.should.be.equal(200)
+              json_data[0].should.have.property('first_name')
+              json_data[0].first_name.should.eql('Foo')
+              done()
+            make_request(default_options,cb, done)
