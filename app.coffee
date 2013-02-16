@@ -35,6 +35,7 @@ app.put "/users/:fb_id.json", user.update_user
 app.get "/users/:fb_id/friends.json", user.get_user_friends
 app.get "/users/:fb_id/friends/requests.json", user.get_friend_requests
 app.post "/users/:fb_id/friends/requests.json", user.create_friend_request
+app.delete "/users/:user_fb_id/friends/:friend_fb_id.json", user.delete_friend
 
 tcpserver = tcp_socket_server.createServer()
 

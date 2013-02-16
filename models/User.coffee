@@ -28,4 +28,19 @@ User.methods.get_pending_friend_requests = (callback, skip=null, limit=null) ->
 				(err, pending_friend_requests) ->
 					callback(pending_friend_requests)
 	)
+
+User.methods.delete_friend = (friend_fb_id, callback) ->
+  # First Delete the friend_fb_id from the user
+  @.db.model('User').update(
+    { fb_id: {$in: [ @.fb_id, friend_fb_id ] } }, #query
+    { $pullAll: { friends : [ @.fb_id, friend_fb_id ]  } },
+    { multi: true },
+    (err, num_affected, raw) ->
+      unless err?
+        console.log "affected #{num_affected}"
+        callback(200)
+      else
+        console.log err
+        callback(500)
+  )
 module.exports = mongoose.model 'User', User

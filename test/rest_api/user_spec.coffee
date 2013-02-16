@@ -135,6 +135,7 @@ describe 'Rest-API for User', ->
             first_name : "Foo"
             last_name : "Bar"
             friends : ["12345678"]
+            fb_id: "234567890"
           )
           new_user.save () ->
             cb = (json_data, res)->
@@ -149,13 +150,8 @@ describe 'Rest-API for User', ->
             fb_id = "12345678"
             # Requested user
             # This is the user who receives the friend request
-            new_user = new User(
-              first_name : "FooCamp"
-              last_name: "BarCamp"
-              fb_id: "012345"
-            )
-            new_user.save (err, doc) ->
-                post_data = "user=" + JSON.stringify(doc)
+            User.findOne fb_id: "234567890" , (err, requested_user) ->
+                post_data = "user=" + JSON.stringify(requested_user)
                 default_options.path = "/users/#{fb_id}/friends/requests.json"
                 default_options.method = "POST"
                 default_options.headers = 
@@ -165,4 +161,14 @@ describe 'Rest-API for User', ->
                     res.statusCode.should.be.equal(201)
                     done()
                 make_request(default_options, cb, done, post_data)
-
+      it 'should DELETE a friend relationship between two users', (done) ->
+        # fb id of the user that makes the delete request
+        user_fb_id = "12345678"
+        # Requested user to DELETE from friends list
+        friend_fb_id = "234567890"
+        default_options.path = "/users/#{user_fb_id}/friends/#{friend_fb_id}.json"
+        default_options.method = "DELETE"
+        cb = (json_data, res)->
+          res.statusCode.should.be.equal(200)
+          done()
+        make_request(default_options, cb, done)

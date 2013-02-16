@@ -88,3 +88,19 @@ module.exports =
             else
               res.json(500, err)
         res.json(201, {})
+
+    delete_friend: (req, res) ->
+      # fb id of the user that makes the delete request
+      user_fb_id = req.params.user_fb_id
+      # fb id of the requested user to delete from friends list
+      friend_fb_id = req.params.friend_fb_id
+      User.findOne 'fb_id' : user_fb_id, (err, user) ->
+        unless err?
+          if user?
+            cb = (status_code)->
+              res.json(status_code, {msg: "Deleted relationship"})
+            user.delete_friend(friend_fb_id, cb)
+          else
+            res.json(404, msg: "User not found")
+        else
+          res.json(500, err)
