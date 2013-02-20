@@ -26,7 +26,7 @@ module.exports =
                 res.json(201, {})
             else
                 res.json(500, err)
-    
+
     update_user: (req, res) ->
         fb_id = req.params.fb_id
         user_to_update = JSON.parse(req.body.user)

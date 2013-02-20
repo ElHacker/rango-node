@@ -24,6 +24,10 @@ app.configure "development", ->
   mongoose.connect 'mongodb://localhost/rango-test'  
   app.use express.errorHandler()
 
+app.configure "production", ->
+  mongoose.connect 'mongodb://rangoapp:cr4ckth3m4ch1n3!@linus.mongohq.com:10022/app12115702'
+  app.use express.errorHandler()
+
 app.get "/", routes.index
 # REST API
 # User resource
@@ -37,7 +41,7 @@ app.get "/users/:fb_id/friends/requests.json", user.get_friend_requests
 app.post "/users/:fb_id/friends/requests.json", user.create_friend_request
 app.delete "/users/:user_fb_id/friends/:friend_fb_id.json", user.delete_friend
 
-tcpserver = tcp_socket_server.createServer()
+# tcpserver = tcp_socket_server.createServer()
 
 http.createServer(app).listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")
