@@ -85,7 +85,7 @@ module.exports =
           console.log(socket.fb_id + " left the chat\r\n")
 
 
-    ).listen(2500, ()->	# 'listening' listener
+    ).listen(8090, ()->	# 'listening' listener
     console.log("TCP SERVER BOUND")
     )
     tcp_server
