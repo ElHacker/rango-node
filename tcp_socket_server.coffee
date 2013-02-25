@@ -56,10 +56,11 @@ module.exports =
           if not socket.identified
             str_data = data.toString('utf-8')
             if (str_data.indexOf(MSG_DELIMITER) != -1 )
+              str_data = str_data.replace(/\r/g, "")
               # Concatenate buffered data and new data
               full_str_data = buffered_str_data + str_data
               id_and_target = extract_id_and_target(full_str_data)
-              
+
               give_identity_and_target(socket, id_and_target)
             else
               # If not found the delimiter save it to a buffer
@@ -72,6 +73,8 @@ module.exports =
               flushed = clients[socket.target_fb_id].write(data)
               # Pause the socket stream when the write stream gets saturated
               socket.pause() unless flushed
+            else
+              socket.write("ERROR 500, NO SOCKET WITH THAT ID")
 
         socket.on 'drain', ()->
           if clients[socket.target_fb_id]?
