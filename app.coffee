@@ -29,6 +29,7 @@ app.configure "production", ->
   app.use express.errorHandler()
 
 app.get "/", routes.index
+app.get "/send_notif", routes.gcm
 # REST API
 # User resource
 app.get "/users.json", user.list

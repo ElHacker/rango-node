@@ -107,6 +107,7 @@ module.exports =
     create_user_gcm_id: (req, res) ->
       user_fb_id = req.params.fb_id
       user_gcm_id = req.body.user_gcm_id
+      console.log "USER GSM ID: #{user_gcm_id}"
       User.findOne fb_id: user_fb_id, (err, user) ->
         unless err?
           if user?
