@@ -40,6 +40,8 @@ app.get "/users/:fb_id/friends.json", user.get_user_friends
 app.get "/users/:fb_id/friends/requests.json", user.get_friend_requests
 app.post "/users/:fb_id/friends/requests.json", user.create_friend_request
 app.delete "/users/:user_fb_id/friends/:friend_fb_id.json", user.delete_friend
+# User's gcm id subresource
+app.post "/users/:fb_id/gcm_ids.json", user.create_user_gcm_id
 
 tcpserver = tcp_socket_server.createServer()
 

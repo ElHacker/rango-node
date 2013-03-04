@@ -104,3 +104,19 @@ module.exports =
             res.json(404, msg: "User not found")
         else
           res.json(500, err)
+    create_user_gcm_id: (req, res) ->
+      user_fb_id = req.params.fb_id
+      user_gcm_id = req.body.user_gcm_id
+      User.findOne fb_id: user_fb_id, (err, user) ->
+        unless err?
+          if user?
+            user.gcm_id = user_gcm_id
+            user.save (err) ->
+              unless err?
+                res.json(201, {})
+              else
+                res.json(500, err)
+          else
+            res.json(404, msg:"User not found")
+        else
+          res.json(500, err)

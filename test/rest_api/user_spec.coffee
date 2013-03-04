@@ -114,6 +114,20 @@ describe 'Rest-API for User', ->
           done()
         make_request(default_options, cb, done, post_data)
 
+    it 'should POST a register id to user', (done) ->
+      fb_id = '12345678'
+      user_gcm_id = 'myregisterid'
+      post_data = "user_gcm_id=" + user_gcm_id
+      default_options.path = "/users/#{fb_id}/gcm_ids.json"
+      default_options.method = "POST"
+      default_options.headers = 
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': post_data.length
+      cb = (json_data, res) ->
+        res.statusCode.should.be.equal(201)
+        done()
+      make_request(default_options, cb, done, post_data)
+
     describe "Sub-Resource Friends", ->
         
         it "should GET all user's accepted friends", (done) ->
