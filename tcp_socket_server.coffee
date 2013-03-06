@@ -1,6 +1,6 @@
 net = require('net')
 util = require('util')
-
+GCMManager = require './libs/GCMManager'
 
 # Every new tcp socket connection must SEND a message
 # indicating their fb_id and the target_fb_id inside a 
@@ -28,17 +28,35 @@ extract_id_and_target = (message) ->
   console.log "FB_ID: #{id_and_target.fb_id}, TARGET_FB_ID #{id_and_target.target_fb_id}"
   id_and_target
 
-give_identity_and_target = (socket, id_and_target) ->
+give_identity_and_target = (socket, source_id, target_id) ->
   # Identify this socket client
   # with a given fb_id
-  socket.fb_id = id_and_target.fb_id
+  socket.fb_id = source_id
   # Indentify to which friend
   # this socket client wants to connect to
-  socket.target_fb_id = id_and_target.target_fb_id
+  socket.target_fb_id = target_id
   # put this client on the hash
   clients[socket.fb_id] = socket
   # This socket got identified
   socket.identified = true
+
+# precondition: a socket with source_id is connected
+# Makes a call request to the target id from the source id
+request_for_call = (source_id, target_id) ->
+  unless clients[target_id]?
+    # If target is not connected
+    # Notify the target of a new incomming call
+    GCMManager.notify target_id, "Incomming call from: #{source_id}", null, null
+  else
+    # Target is connected (probably waiting), start the call
+    start_call(source_id, target_id)
+
+# Precondition: both sockets with source_id and target_id are connected
+# Starts the connection between two users
+start_call = (source_id, target_id) ->
+  console.log "START"
+  clients[source_id].write("START\n")
+  clients[target_id].write("START\n")
 
 module.exports =
   # starts a TCP server
@@ -59,9 +77,10 @@ module.exports =
               str_data = str_data.replace(/\r/g, "")
               # Concatenate buffered data and new data
               full_str_data = buffered_str_data + str_data
-              id_and_target = extract_id_and_target(full_str_data)
+              ids = extract_id_and_target(full_str_data)
 
-              give_identity_and_target(socket, id_and_target)
+              give_identity_and_target(socket, ids.fb_id, ids.target_fb_id)
+              request_for_call(ids.fb_id, ids.target_fb_id)
             else
               # If not found the delimiter save it to a buffer
               buffered_str_data += str_data
