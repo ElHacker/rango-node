@@ -4,11 +4,12 @@ User = require '../models/User'
 class GCMManager
   # Set the secret api key
   @sender: new gcm.Sender('AIzaSyCVbBMMeGKe0qNClQCfuUDx6IlbWq3DNww')
-  @notify: (user_fb_id, message_content = "Incomming call", title = "Rango", collapseKey="demo") ->
+  @notify: (user_fb_id, source_fb_id ,message_content = "Incomming call", title = "Rango", collapseKey="demo") ->
     # Optional
     message = new gcm.Message()
     message.addData('title', title)
     message.addData('message', message_content)
+    message.addData('source_fb_id', source_fb_id)
     message.collapseKey = collapseKey
     message.delayWhileIdle = true
     message.timeToLive = 3

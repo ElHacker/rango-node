@@ -46,7 +46,7 @@ request_for_call = (source_id, target_id) ->
   unless clients[target_id]?
     # If target is not connected
     # Notify the target of a new incomming call
-    GCMManager.notify target_id, "Incomming call from: #{source_id}", null, null
+    GCMManager.notify target_id, source_id, null, null, null
   else
     # Target is connected (probably waiting), start the call
     start_call(source_id, target_id)
