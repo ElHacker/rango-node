@@ -4,17 +4,17 @@ User = require '../models/User'
 class GCMManager
   # Set the secret api key
   @sender: new gcm.Sender('AIzaSyCVbBMMeGKe0qNClQCfuUDx6IlbWq3DNww')
-  @notify: (user_fb_id, source_fb_id ,message_content = "Incomming call", title = "Rango", collapseKey="demo") ->
+  @notify: (to_fb_id, from_fb_id ,message_content = "Incomming call", title = "Rango", collapse_key="demo") ->
     # Optional
     message = new gcm.Message()
     message.addData('title', title)
     message.addData('message', message_content)
-    message.addData('source_fb_id', source_fb_id)
-    message.collapseKey = collapseKey
+    message.addData('from_fb_id', from_fb_id)
+    message.collapseKey = collapse_key
     message.delayWhileIdle = true
     message.timeToLive = 3
 
-    User.findOne fb_id: user_fb_id, (err, user) ->
+    User.findOne fb_id: to_fb_id, (err, user) ->
       unless err?
         if user
           registrationIds = []
@@ -27,7 +27,7 @@ class GCMManager
               console.log err
             console.log result
         else
-          console.log "Not user with fb_id: #{user_fb_id}"
+          console.log "Not user with fb_id: #{to_fb_id}"
       else
         console.log "Error db: #{error}"
 
