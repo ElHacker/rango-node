@@ -81,7 +81,7 @@ module.exports =
                     user.friends.push requested_user.fb_id
                     user.save (err) ->
                       unless err?
-                          GCMManager.notify requested_user.fb_id, requester_fb_id, "Friend request", null, null
+                          GCMManager.notify requested_user.fb_id, requester_fb_id, "Friend request", null, null, "invite"
                           res.json(201)
                       else
                           res.json(500, err)
