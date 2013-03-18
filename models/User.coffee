@@ -4,6 +4,7 @@ User = new mongoose.Schema(
   first_name: String
   last_name: String
   fb_id: { type: String, unique: true }
+  email: String
   gcm_id: String
   friends: [ String ]
   created_at: { type: Date, default: Date.now() }

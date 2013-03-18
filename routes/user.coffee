@@ -22,11 +22,20 @@ module.exports =
     create_user: (req, res) ->
         json_user = JSON.parse(req.body.user)
         new_user = new User(json_user)
-        new_user.save (err)->
-            unless err?
-                res.json(201, {})
+        User.findOne fb_id: new_user.fb_id, (err, user)->
+          unless err
+            # if user does not exists
+            unless user?
+              # Save the new user
+              new_user.save (err)->
+                  unless err?
+                      res.json(201, {})
+                  else
+                      res.json(500, err)
             else
-                res.json(500, err)
+              res.json(200, "The user with fb_id: #{new_user.fb_id} already existed")
+          else
+            res.json(500, err)
 
     update_user: (req, res) ->
         fb_id = req.params.fb_id

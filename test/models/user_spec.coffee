@@ -21,14 +21,16 @@ describe 'User', ->
 		mongoose.connect 'mongodb://localhost/rango-test', ->
 			User.remove done
 
-	it 'should have the right structure', (done) ->
-		user.should.have.property('first_name')
-		user.should.have.property('last_name')
-		user.should.have.property('fb_id')
-		user.should.have.property('friends')
-		user.should.have.property('created_at')
-		user.should.have.property('updated_at')
-		done()
+  it 'should have the right structure', (done) ->
+    user.should.have.property('first_name')
+    user.should.have.property('last_name')
+    user.should.have.property('fb_id')
+    user.should.have.property('email')
+    user.should.have.property('gcm_id')
+    user.should.have.property('friends')
+    user.should.have.property('created_at')
+    user.should.have.property('updated_at')
+    done()
 
 	it 'should save a new user', (done) ->
 		user.save ->
