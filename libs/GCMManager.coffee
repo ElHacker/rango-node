@@ -19,7 +19,7 @@ class GCMManager
               message.addData('action', action)
               message.collapseKey = collapse_key
               message.delayWhileIdle = false
-              message.timeToLive = 3
+              message.timeToLive = 0
               registrationIds = []
               # At least one reg id is required
               registrationIds.push(user.gcm_id)
