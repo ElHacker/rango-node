@@ -103,6 +103,7 @@ module.exports =
 
         # Remove client from the list when it leaves
         socket.on 'end', ()->
+          clients[socket.target_fb_id].write("END\n")
           delete clients[socket.fb_id]
           console.log(socket.fb_id + " left the chat\r\n")
 
