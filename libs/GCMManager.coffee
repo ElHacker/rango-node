@@ -17,7 +17,7 @@ class GCMManager
               message.addData('message', message_content + " from #{from_user.first_name} #{from_user.last_name}")
               message.addData('from_fb_id', from_fb_id)
               message.addData('action', action)
-              message.collapseKey = collapse_key
+              message.collapseKey = collapse_key if collapse_key?
               message.delayWhileIdle = false
               message.timeToLive = 0
               registrationIds = []
