@@ -10,7 +10,7 @@ module.exports =
     message = req.query['msg']
     from_fb_id = req.query['from_fb_id']
     collapse_key = req.query['collapse_key']
-    GCMManager.notify to_fb_id, from_fb_id, message, null, null
+    GCMManager.notify to_fb_id, from_fb_id, message, null, collapse_key, 'call'
     message = new gcm.Message()
     sender = new gcm.Sender('AIzaSyCVbBMMeGKe0qNClQCfuUDx6IlbWq3DNww')
     res.send ("Notification sent")
