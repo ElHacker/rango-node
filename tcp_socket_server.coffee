@@ -58,6 +58,15 @@ start_call = (source_id, target_id) ->
   clients[source_id].write("START\n")
   clients[target_id].write("START\n")
 
+# Send end message to stop a call
+stop_call = (socket) ->
+  # Tell the target socket to end the call
+  if clients[socket.target_fb_id]?
+    clients[socket.target_fb_id].write("END\n")
+  # Delete this socket from client list
+  delete clients[socket.fb_id]
+  console.log(socket.fb_id + " left the chat\r\n")
+
 module.exports =
   # starts a TCP server
   createServer : ()->
@@ -101,12 +110,15 @@ module.exports =
             clients[socket.target_fb_id].resume()
 
 
-        # Remove client from the list when it leaves
+        # End the conversation
         socket.on 'end', ()->
-          if clients[socket.target_fb_id]?
-            clients[socket.target_fb_id].write("END\n")
-          delete clients[socket.fb_id]
-          console.log(socket.fb_id + " left the chat\r\n")
+          stop_call(socket)
+
+        # Graceful degradation in case of error
+        socket.on 'error', (exception) ->
+          console.log "Ignored exception #{exception}"
+          stop_call(socket)
+          stop_call(clients[socket.target_fb_id])
 
 
     ).listen(8090, ()->	# 'listening' listener
